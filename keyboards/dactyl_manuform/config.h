@@ -6,7 +6,7 @@
 #undef MATRIX_ROWS
 #define MATRIX_ROWS 12
 
-#define MASTER_RIGHT
+#define MASTER_LEFT
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.
