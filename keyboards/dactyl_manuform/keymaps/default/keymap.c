@@ -1,43 +1,10 @@
 #include QMK_KEYBOARD_H
 
-#include "quantum.h"
 
+#include "quantum.h"
+#include "oled.c"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
-    [0] = LAYOUT_5x6_2(
-		KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, KC_P7,                          KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, \
-    	KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, KC_P7,                          KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, \
-    	KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, KC_P7,                          KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, \
-    	KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, KC_P7,                          KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, KC_P7, \
-    	KC_P7, KC_P7, KC_P7, KC_P7, 													 KC_P7, KC_P7, KC_P7, KC_P7, \
-									KC_P7, KC_P7,                          KC_P7, KC_P7,
-        			                			KC_P7, KC_P7, KC_P7, KC_P7, \
-                    			    			KC_P7, KC_P7, KC_P7, KC_P7  \
-    )
+	[0] = LAYOUT_5x6_2(KC_BSLS, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_QUOT, KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_ESC, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_LSFT, KC_EXLM, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_MINS, KC_LCTL, KC_LGUI, KC_LALT, KC_HOME, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_PGUP, KC_PGDN, KC_PGUP, KC_PGDN, KC_BSPC, KC_DEL, KC_BSPC, KC_DEL, KC_SPC, KC_TAB, KC_SPC, KC_TAB)
 };
 
-#ifdef OLED_ENABLE
-
-oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-	return OLED_ROTATION_270;
-}
-
-
-
-bool oled_task_user(void) {
-
-	// Host Keyboard Layer Status
-    oled_write_P(PSTR("PORCO\n"), false);
-    oled_write_P(PSTR("DIO\n"), false);
-    oled_write_P(PSTR("v2\n"), false);
-
-        // Host Keyboard LED Status
-    led_t led_state = host_keyboard_led_state();
-    oled_write_P(led_state.num_lock ? PSTR("NUM\n") : PSTR("    "), false);
-    oled_write_P(led_state.caps_lock ? PSTR("CAP\n") : PSTR("    "), false);
-    oled_write_P(led_state.scroll_lock ? PSTR("SCR\n") : PSTR("    "), false);
-
-    return false;
-}
-#endif
