@@ -10,7 +10,7 @@
         "console": true,
         "extrakey": true,
         "mousekey": true,
-        "nkro": false
+        "nkro": true
     },
     "matrix_pins": {
         "cols": [
