@@ -1,5 +1,3 @@
-
-
 #ifdef OLED_ENABLE
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
@@ -7,16 +5,15 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 bool oled_task_user(void) {
-
     switch (get_highest_layer(layer_state)) {
         case _LAYER0:
             oled_write_P(PSTR("WRITE\n"), false);
             break;
         case _LAYER1:
-            oled_write_P(PSTR("NUMBER\n"), false);
+            oled_write_P(PSTR("NUMBE\n"), false);
             break;
         case _LAYER2:
-            oled_write_P(PSTR("MOVMENT\n"), false);
+            oled_write_P(PSTR("MOVME\n"), false);
             break;
         case _LAYER3:
             oled_write_P(PSTR("3\n"), false);
@@ -34,13 +31,13 @@ bool oled_task_user(void) {
             oled_write_P(PSTR("7\n"), false);
             break;
         case _LAYER8:
-            oled_write_P(PSTR("DVORAK\n"), false);
+            oled_write_P(PSTR("GAME\n"), false);
             break;
         case _LAYER9:
-            oled_write_P(PSTR("9\n"), false);
+            oled_write_P(PSTR("Dvorak\n"), false);
             break;
         case _LAYER10:
-            oled_write_P(PSTR("10\n"), false);
+            oled_write_P(PSTR("Colemak\n"), false);
             break;
         case _LAYER11:
             oled_write_P(PSTR("11\n"), false);
@@ -65,3 +62,14 @@ bool oled_task_user(void) {
     return false;
 }
 #endif
+
+#define NUM_LAYER_TIMEOUT 10000  //configure your timeout in milliseconds
+
+void matrix_scan_user(void) {
+    int layer = get_highest_layer(layer_state);
+    if ( layer == _LAYER1 || layer == _LAYER2 ) {
+        if (last_input_activity_elapsed() > NUM_LAYER_TIMEOUT) {
+            layer_move(_LAYER0);
+        }
+    }
+}
