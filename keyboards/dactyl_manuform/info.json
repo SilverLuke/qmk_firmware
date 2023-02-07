@@ -4,14 +4,6 @@
     "maintainer": "SilverLuke",
     "bootloader": "caterina",
     "diode_direction": "COL2ROW",
-    "features": {
-        "bootmagic": true,
-        "command": true,
-        "console": true,
-        "extrakey": true,
-        "mousekey": true,
-        "nkro": true
-    },
     "matrix_pins": {
         "cols": [
             "D4",
