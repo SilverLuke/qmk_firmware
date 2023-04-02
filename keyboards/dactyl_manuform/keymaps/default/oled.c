@@ -9,22 +9,22 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 bool oled_task_user(void) {
     oled_set_cursor(0, 0);
     switch (get_highest_layer(layer_state)) {
-        case _LAYER0:
+        case L_WRITE:
             oled_write_ln_P(PSTR("WRITE"), false);
             break;
-        case _LAYER1:
+        case L_COLEMAK:
             oled_write_ln_P(PSTR("CO-DH"), false);
             break;
-        case _LAYER2:
+        case L_DVORAK:
             oled_write_ln_P(PSTR("DVORA"), false);
             break;
-        case _LAYER6:
+        case L_MOVE:
             oled_write_ln_P(PSTR("MOVE"), false);
             break;
-        case _LAYER7:
+        case L_NUMBER:
             oled_write_ln_P(PSTR("NUMB"), false);
             break;
-        case _LAYER8:
+        case L_GAME:
             oled_write_ln_P(PSTR("GAME"), false);
             break;
         default:
@@ -55,9 +55,9 @@ bool oled_task_user(void) {
 
 void matrix_scan_user(void) {  // Go back to default layer after 10 second of inattivity
     int layer = get_highest_layer(layer_state);
-    if ( layer == _LAYER1 || layer == _LAYER2 ) {
+    if ( layer == L_MOVE || layer == L_NUMBER ) {
         if (last_input_activity_elapsed() > NUM_LAYER_TIMEOUT) {
-            layer_move(_LAYER0);
+            layer_move(L_WRITE);
         }
     }
 }
