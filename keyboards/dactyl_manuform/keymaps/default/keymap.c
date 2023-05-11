@@ -12,13 +12,36 @@
 #define L_NUMBER 7
 #define L_GAME 8
 
+void dance_layers(qk_tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1: // Enable write layer
+            if (state->pressed) {
+                layer_on(L_MOVE);
+                layer_off(L_WRITE);
+            }
+            break;
+        case 2: // Enable MOVE
+            layer_on(L_MOVE);
+            layer_off(L_WRITE);
+            break;
+    }
+}
+
+void dance_layers_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1: // Enable write layer
+            layer_on(L_WRITE);
+            layer_off(L_MOVE);
+            break;
+        case 2: // Enable MOVE
+            layer_on(L_MOVE);
+            layer_off(L_WRITE);
+            break;
+    }
+}
+
 // Tap Dance declarations
-enum {
-    TD_LSFT_CAPS,
-    TD_RSFT_CAPS,
-    TD_L_RB_SB_B,
-    TD_R_RB_SB_B,
-};
+enum { TD_LSFT_CAPS, TD_RSFT_CAPS, TD_L_RB_SB_B, TD_R_RB_SB_B, TD_L_MOVE };
 
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
@@ -27,8 +50,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_RSFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_RSFT, KC_CAPS),
     [TD_L_RB_SB_B] = ACTION_TAP_DANCE_DOUBLE(KC_LPRN, KC_LBRC),
     [TD_R_RB_SB_B] = ACTION_TAP_DANCE_DOUBLE(KC_RPRN, KC_RBRC),
+    [TD_L_MOVE]    = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_layers, dance_layers_reset)
 };
-
 
 /**
 L00, L01, L02, L03, L04, L05,     R00, R01, R02, R03, R04, R05, \
@@ -41,15 +64,15 @@ L54, L55,                         R50, R51, \
 L52, L53,                         R52, R53  \
  */
 
- const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
  [L_WRITE] = LAYOUT_5x6_2(
         TO(L_GAME),       KC_1,             KC_2,    KC_3,   KC_4,    KC_5,               KC_6,             KC_7,    KC_8,    KC_9,   KC_0,             TO(L_DVORAK),
         KC_BSLS,          KC_QUOT,          KC_W,    KC_E,   KC_R,    KC_T,               KC_Y,             KC_U,    KC_I,    KC_O,   KC_SCLN,          KC_SLSH,
-        TO(L_MOVE),       KC_Q,             KC_A,    KC_S,   KC_D,    KC_F,               KC_G,             KC_H,    KC_J,    KC_K,   KC_L,             TO(L_NUMBER),
+        TD(TD_L_MOVE),    KC_Q,             KC_A,    KC_S,   KC_D,    KC_F,               KC_G,             KC_H,    KC_J,    KC_K,   KC_L,             TO(L_NUMBER),
         KC_NO,            TD(TD_L_RB_SB_B), KC_Z,    KC_X,   KC_C,    KC_V,               KC_B,             KC_N,    KC_M,    KC_P,   TD(TD_R_RB_SB_B), KC_GRV,
         KC_NO,            KC_LCTL,          KC_MINS, KC_EQL,                              KC_COMM,          KC_DOT,  KC_RALT, KC_NO,
-        TD(TD_LSFT_CAPS), KC_SPC,                                                         KC_ENT,           KC_BSPC,
+        KC_LSFT,          KC_SPC,                                                         KC_ENT,           KC_BSPC,
         KC_TAB,           KC_ESC,                                                         TD(TD_RSFT_CAPS), KC_DEL,
         KC_LGUI,          KC_LALT,                                                        KC_RCTL, KC_INS),
 
@@ -98,10 +121,10 @@ L52, L53,                         R52, R53  \
         KC_T, KC_TAB, KC_Q, KC_W, KC_E, KC_R,                       KC_Y, KC_U, KC_I, KC_O, KC_SCLN, KC_SLSH,
         KC_G, KC_LSFT, KC_A, KC_S, KC_D, KC_F,                      KC_G, KC_H, KC_J, KC_K, KC_L, KC_NO,
         KC_U, KC_LCTL, KC_Z, KC_X, KC_C, KC_V,                      KC_B, KC_N, KC_M, KC_P, KC_RPRN, KC_GRV,
-        KC_J, KC_LALT, KC_6, KC_7,                                  KC_NO, KC_NO, KC_NO, KC_NO,
-        KC_8, KC_SPC,                                               KC_NO, KC_NO,
-        KC_9, KC_0,                                                 KC_NO, KC_NO,
-        KC_LGUI, KC_ESC,                                            KC_NO, KC_NO)
+        KC_J, KC_LALT, KC_6, KC_7,                                  KC_TRNS, KC_TRNS, KC_TRNS, KC_NO,
+        KC_8, KC_SPC,                                               KC_TRNS, KC_TRNS,
+        KC_9, KC_0,                                                 KC_TRNS, KC_TRNS,
+        KC_LGUI, KC_ESC,                                            KC_TRNS, KC_TRNS)
 
 };
 

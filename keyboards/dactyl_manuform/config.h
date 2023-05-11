@@ -24,7 +24,9 @@
 
 
 #define DISPLAY_X (63)
-#define TAPPING_TERM 400
+#define TAPPING_TERM 250
+
+#define TAPPING_TOGGLE 2
 
 /*
  * Feature disable options
