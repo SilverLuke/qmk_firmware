@@ -1,6 +1,6 @@
 #ifdef OLED_ENABLE
 #include <stdio.h>
-
+#include "layers_definition.h"
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_270;
@@ -43,13 +43,11 @@ bool oled_task_user(void) {
 	}
 	oled_set_cursor(0, 9);
 	char wpm_str[10];
-	sprintf(wpm_str, "WPM:\n%03d\n", get_current_wpm());
+	sprintf(wpm_str, "KPM:\n%03d\n", get_current_wpm());
 	oled_write(wpm_str, false);
 
     return false;
 }
-
-#endif
 
 #define NUM_LAYER_TIMEOUT 10000  //configure your timeout in milliseconds
 
@@ -61,3 +59,5 @@ void matrix_scan_user(void) {  // Go back to default layer after 10 second of in
         }
     }
 }
+
+#endif
