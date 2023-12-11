@@ -2,20 +2,48 @@
 
 #include "quantum.h"
 #include "layers_definition.h"
+
+typedef struct {
+    uint16_t keycode;
+} tap_data;
+
+#define ACCENTED_LETTER_TAP_DANCE(key) { .fn = {NULL, accent_letter, NULL}, .user_data = (void *)&((tap_data){.keycode = key}) }
+
 #include "tap_functions.c"
 
 // Tap Dance declarations
-enum { TD_LSFT_CAPS, TD_RSFT_CAPS, TD_L_RB_SB_B, TD_R_RB_SB_B, TD_L_MOVE, TD_L_NUMBER };
+enum {
+    TD_LSFT_CAPS, TD_RSFT_CAPS,
+    TD_L_RB_SB_B, TD_R_RB_SB_B,
+    TD_L_MOVE, TD_L_NUMBER,
+    // Lettere accentate
+    TD_AL_A,
+    TD_AL_E,
+    TD_AL_I,
+    TD_AL_O,
+    TD_AL_U,
+};
 
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
-    // Tap once for Escape, twice for Caps Lock
+    // Attiva il caps lock sul shift sinistro
     [TD_LSFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
+    // Attiva il caps lock sul shift destro
     [TD_RSFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_RSFT, KC_CAPS),
+    // Parentesi un tap ( doppio [ e doppio + shift {
     [TD_L_RB_SB_B] = ACTION_TAP_DANCE_DOUBLE(KC_LPRN, KC_LBRC),
+    // Parentesi un tap ) doppio ] e doppio + shift }
     [TD_R_RB_SB_B] = ACTION_TAP_DANCE_DOUBLE(KC_RPRN, KC_RBRC),
+    // Layer di move se tenuto premuto e attivo al doppio tap
     [TD_L_MOVE]    = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_move_layer, dance_move_layer_reset),
+    // Layer dei numeri se tengo premuto e attivo al doppio tap
     [TD_L_NUMBER]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_number_layer, dance_number_layer_reset),
+
+    [TD_AL_A] = ACCENTED_LETTER_TAP_DANCE(KC_A),
+    [TD_AL_E] = ACCENTED_LETTER_TAP_DANCE(KC_E),
+    [TD_AL_I] = ACCENTED_LETTER_TAP_DANCE(KC_I),
+    [TD_AL_O] = ACCENTED_LETTER_TAP_DANCE(KC_O),
+    [TD_AL_U] = ACCENTED_LETTER_TAP_DANCE(KC_U),
 };
 
 /**
@@ -32,11 +60,11 @@ L52, L53,                         R52, R53  \
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
  [L_WRITE] = LAYOUT_5x6_2(
-        TO(L_GAME),    KC_1,             KC_2,    KC_3,   KC_4,    KC_5,               KC_6, KC_7,    KC_8,     KC_9,    KC_0,             TO(L_DVORAK),
-        KC_BSLS,       KC_QUOT,          KC_W,    KC_E,   KC_R,    KC_T,               KC_Y, KC_U,    KC_I,     KC_O,    KC_SCLN,          KC_SLSH,
-        TD(TD_L_MOVE), KC_Q,             KC_A,    KC_S,   KC_D,    KC_F,               KC_G, KC_H,    KC_J,     KC_K,    KC_L,             TD(TD_L_NUMBER),
-        KC_PSCR,       TD(TD_L_RB_SB_B), KC_Z,    KC_X,   KC_C,    KC_V,               KC_B, KC_N,    KC_M,     KC_P,    TD(TD_R_RB_SB_B), KC_GRAVE,
-        KC_INS,        KC_LCTL,          KC_MINS, KC_EQL,                                             KC_COMMA, KC_DOT,  KC_RALT,          KC_SCROLL_LOCK,
+        KC_0,          KC_1,             KC_2,    KC_3,        KC_4,    KC_5,               KC_6, KC_7,    KC_8,     KC_9,    KC_0,             TO(L_GAME),
+        KC_BSLS,       KC_QUOT,          KC_W,    TD(TD_AL_E), KC_R,    KC_T,               KC_Y, KC_U,    KC_I,     KC_O,    KC_SCLN,          KC_SLSH,
+        TD(TD_L_MOVE), KC_Q,             KC_A,    KC_S,        KC_D,    KC_F,               KC_G, KC_H,    KC_J,     KC_K,    KC_L,             TD(TD_L_NUMBER),
+        KC_PSCR,       TD(TD_L_RB_SB_B), KC_Z,    KC_X,        KC_C,    KC_V,               KC_B, KC_N,    KC_M,     KC_P,    TD(TD_R_RB_SB_B), KC_GRAVE,
+        KC_INS,        KC_LCTL,          KC_MINS, KC_EQL,                                              KC_COMMA,   KC_DOT,  KC_RALT,          KC_SCROLL_LOCK,
         KC_LSFT,       KC_SPC,                                                                                           KC_ENTER,         KC_BACKSPACE,  // Alias KC_BSPC
         KC_TAB,        KC_ESC,                                                                                           TD(TD_RSFT_CAPS), KC_DELETE,  // Alias KC_DEL
         KC_LGUI,       KC_LALT,                                                                                          KC_RCTL,          KC_RGUI),
@@ -45,7 +73,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         TO(L_DVORAK), KC_7, KC_5, KC_3, KC_1, KC_9,            KC_0, KC_2, KC_4, KC_6, KC_8, TO(L_GAME),
         KC_NO, KC_SCLN, KC_COMM, KC_DOT, KC_P, KC_Y,           KC_F, KC_G, KC_C, KC_R, KC_L, KC_NO,
         KC_TRNS, KC_A, KC_O, KC_E, KC_U, KC_I,                 KC_D, KC_H, KC_T, KC_N, KC_S, KC_TRNS,
-        KC_NO, KC_NO, KC_Q, KC_J, KC_K, KC_X,                  KC_B, KC_M, KC_W, KC_V, KC_Z, KC_NO,
+        KC_NO, KC_NO, KC_Q, KC_J, KC_K, KC_X,   000               KC_B, KC_M, KC_W, KC_V, KC_Z, KC_NO,
         KC_NO, KC_TRNS, KC_TRNS, KC_TRNS,                      KC_TRNS, KC_TRNS, KC_TRNS, KC_NO,
         KC_TRNS, KC_TRNS,                                      KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS,                                      KC_TRNS, KC_TRNS,
