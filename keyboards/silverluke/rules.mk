@@ -1,5 +1,4 @@
-# This file intentionally left blank
-OLED_DRIVER = SSD1306
+#OLED_DRIVER = SSD1306
 SPLIT_KEYBOARD = yes
 OLED_ENABLE = yes
 LTO_ENABLE = yes

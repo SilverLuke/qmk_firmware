@@ -1,6 +1,6 @@
 # dactyl_manuform
 
-![dactyl_manuform](imgur.com image replace me!)
+![SilverLuke](imgur.com image replace me!)
 
 *A short description of the keyboard/project*
 

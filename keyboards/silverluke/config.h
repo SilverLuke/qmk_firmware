@@ -6,6 +6,7 @@
 #define EE_HANDS  // Software sinistra :avrdude-split-left  destra :avrdude-split-right
 
 #define USE_I2C
+#define DISPLAY_X (63)
 
 #undef MATRIX_ROWS
 #define MATRIX_ROWS 12
@@ -23,23 +24,7 @@
 #define MOUSEKEY_TIME_TO_MAX    32
 
 
-#define DISPLAY_X (63)
-#define TAPPING_TERM 250
+#define TAPPING_TERM 200
 
-#define TAPPING_TOGGLE 2
+// #define TAPPING_TOGGLE 2
 
-/*
- * Feature disable options
- *  These options are also useful to firmware size reduction.
- */
-
-/* disable debug print */
-//#define NO_DEBUG
-
-/* disable print */
-//#define NO_PRINT
-
-/* disable action features */
-//#define NO_ACTION_LAYER
-//#define NO_ACTION_TAPPING
-//#define NO_ACTION_ONESHOT
